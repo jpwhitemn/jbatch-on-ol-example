@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<server description="Liberty Server">
+	<featureManager>
+		<feature>appSecurity-5.0</feature>
+		<feature>servlet-6.0</feature>
+		<feature>batch-2.1</feature>
+	</featureManager>
+
+	<variable
+		name="default.http.port" defaultValue="9080" />
+	<variable
+		name="default.https.port" defaultValue="9443" />
+
+	<httpEndpoint
+		httpPort="${default.http.port}"
+		httpsPort="${default.https.port}" id="defaultHttpEndpoint" />
+
+	<authorization-roles
+		id="com.ibm.ws.batch">
+		<security-role name="batchAdmin">
+			<special-subject type="EVERYONE" />
+		</security-role>
+	</authorization-roles>
+	<basicRegistry
+		id="basic">
+		<user name="admin" password="adminpwd" />
+		<user name="dev" password="dev" />
+	</basicRegistry>
+	<administrator-role>
+		<user>admin</user>
+	</administrator-role>
+	<webApplication
+		contextRoot="/"
+		id="JBatchExample.war"
+		location="JBatchExample.war">
+		<run-as>
+			<role-name>admin</role-name>
+		</run-as>
+	</webApplication>
+	<ssl id="defaultSSLConfig" trustDefaultCerts="true" />
+
+	<!--
+	<include location="userRegistry.xml" />
+
+	<authorization-roles id="com.ibm.ws.batch">
+		<security-role name="batchAdmin">
+			<user name="bob" />
+		</security-role>
+	</authorization-roles>
+
+	<application context-root="/" id="JBatchExample.war"
+		location="JBatchExample.war"
+		name="JBatchExample.war" type="war">
+		<application-bnd>
+			<security-role name="admin">
+				<group name="Manager" />
+				<group name="TeamLead" />
+			</security-role>
+		</application-bnd>
+	</application>
+	-->
+</server>
